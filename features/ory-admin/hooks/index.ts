@@ -1,12 +1,13 @@
-export { useIdentity, useUser, useUsers } from "./useUsersQuery";
+export { useIdentity, useUser, useUsers } from "./useUsersQuery"
 export {
   useClient,
   useClients,
   useCreateClient,
   useDeleteClient,
-} from "./useClientsQuery";
+} from "./useClientsQuery"
 export {
   useRelationships,
   useCreateRelationship,
   useDeleteRelationships,
-} from "./useRelationshipsQuery";
+} from "./useRelationshipsQuery"
+export { useHealth } from "./useHealthQuery"

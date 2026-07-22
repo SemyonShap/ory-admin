@@ -3,20 +3,28 @@ import {
   OAuth2Api,
   IdentityApi,
   RelationshipApi,
-} from "@ory/client-fetch";
-import { adminUrl } from "../../../lib/sdk";
+} from "@ory/client-fetch"
+import {
+  kratosAdminUrl,
+  hydraAdminUrl,
+  ketoWriteUrl,
+  ketoReadUrl,
+} from "@/lib/sdk"
 
 const jsonConfig = (basePath: string) =>
   new Configuration({
     basePath,
     headers: { Accept: "application/json" },
-  });
+  })
 
 export const identityAdminClient = () =>
-  new IdentityApi(jsonConfig(`${adminUrl()}/kratos`));
+  new IdentityApi(jsonConfig(kratosAdminUrl()))
 
 export const oAuth2AdminClient = () =>
-  new OAuth2Api(jsonConfig(`${adminUrl()}/hydra`));
+  new OAuth2Api(jsonConfig(hydraAdminUrl()))
 
-export const relationshipClient = () =>
-  new RelationshipApi(jsonConfig(`${adminUrl()}/keto`));
+export const relationshipReadClient = () =>
+  new RelationshipApi(jsonConfig(ketoReadUrl()))
+
+export const relationshipWriteClient = () =>
+  new RelationshipApi(jsonConfig(ketoWriteUrl()))

@@ -25,14 +25,14 @@ export function AdminSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="pt-6 pb-2 px-6">
+      <SidebarHeader className="pt-6 pb-4 px-6">
         <Link href="/" className="flex items-center">
           <MainIcon className="h-8 w-auto" />
         </Link>
       </SidebarHeader>
-      <SidebarContent className="p-2">
+      <SidebarContent className="p-4">
         <SidebarMenu>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5">
             {items.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton isActive={pathname === item.href}>
@@ -41,7 +41,7 @@ export function AdminSidebar() {
                     className="flex items-start gap-4 font-heading"
                   >
                     <item.icon className="self-center" />
-                    {item.label}
+                    <span>{item.label}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
