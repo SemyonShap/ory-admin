@@ -9,11 +9,11 @@ import {
   getRelationships,
   createRelationship,
   deleteRelationships,
-  getOpl,
+  getNamespaces,
 } from "../actions/relationships"
-import type { OplConfig } from "../utils/loadOpl"
 import { DEFAULT_QUERY_OPTIONS } from "./queryOptions"
 import { toast } from "sonner"
+import { NamespacesWithRelation } from "../types"
 
 export function useRelationships(
   req?: Omit<GetRelationshipsRequest, "pageToken">,
@@ -50,11 +50,11 @@ export function useDeleteRelationships() {
   })
 }
 
-export function useOpl() {
-  return useQuery<OplConfig | null>({
+export function useNamespaces() {
+  return useQuery<NamespacesWithRelation | null>({
     queryKey: ["opl"],
     queryFn: async () => {
-      const result = await getOpl()
+      const result = await getNamespaces()
       if (!result) toast.error("Failed to load OPL config")
       return result
     },

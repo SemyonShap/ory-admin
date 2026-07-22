@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { formRegistry } from "../../form-builder"
-import type { OplConfig } from "../utils/loadOpl"
+import type { NamespacesWithRelation } from "../types"
 
 function nsEnum(namespaces: string[]) {
   return namespaces.length > 0
@@ -8,11 +8,16 @@ function nsEnum(namespaces: string[]) {
     : z.string().min(1, "Namespace is required")
 }
 
-export function createRelationshipSchema(config?: OplConfig | null) {
+export function createRelationshipSchema(
+  config?: NamespacesWithRelation | null,
+) {
   const namespaces = config?.namespaces ?? []
   const namespaceRelations = config?.namespaceRelations ?? {}
 
   const hasOpl = namespaces.length > 0
+  const hasRelations = Object.values(namespaceRelations).some(
+    (r) => r.length > 0,
+  )
 
   return z
     .object({
@@ -30,8 +35,8 @@ export function createRelationshipSchema(config?: OplConfig | null) {
         .min(1, "Relation is required")
         .register(formRegistry, {
           label: "Relation",
-          placeholder: "Select a relation",
-          interface: "select",
+          placeholder: hasRelations ? "Select a relation" : "Enter relation",
+          ...(hasRelations ? { interface: "select" } : {}),
         }),
 
       subjectType: z.enum(["id", "set"]).default("id").register(formRegistry, {
@@ -68,8 +73,10 @@ export function createRelationshipSchema(config?: OplConfig | null) {
             .min(1, "Subject Set Relation is required")
             .register(formRegistry, {
               label: "Subject Set Relation",
-              placeholder: "Select a relation",
-              interface: "select",
+              placeholder: hasRelations
+                ? "Select a relation"
+                : "Enter relation",
+              ...(hasRelations ? { interface: "select" } : {}),
             }),
         })
         .register(formRegistry, {
@@ -81,7 +88,10 @@ export function createRelationshipSchema(config?: OplConfig | null) {
       if (!hasOpl) return
 
       const allowedRelations = namespaceRelations[data.namespace] || []
-      if (!allowedRelations.includes(data.relation)) {
+      if (
+        allowedRelations.length > 0 &&
+        !allowedRelations.includes(data.relation)
+      ) {
         ctx.addIssue({
           code: "custom",
           path: ["relation"],
@@ -97,16 +107,6 @@ export function createRelationshipSchema(config?: OplConfig | null) {
             message: "Subject ID is required when Subject Type is ID",
           })
         }
-        if (
-          data.subject_set !== undefined &&
-          Object.keys(data.subject_set).length > 0
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            path: ["subject_set"],
-            message: "Subject Set must be empty when Subject Type is ID",
-          })
-        }
       } else if (data.subjectType === "set") {
         if (!data.subject_set) {
           ctx.addIssue({
@@ -117,7 +117,10 @@ export function createRelationshipSchema(config?: OplConfig | null) {
         } else {
           const subjectSetRelations =
             namespaceRelations[data.subject_set.namespace] || []
-          if (!subjectSetRelations.includes(data.subject_set.relation)) {
+          if (
+            subjectSetRelations.length > 0 &&
+            !subjectSetRelations.includes(data.subject_set.relation)
+          ) {
             ctx.addIssue({
               code: "custom",
               path: ["subject_set", "relation"],

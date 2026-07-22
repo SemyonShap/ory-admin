@@ -8,11 +8,13 @@ import {
   CheckOplSyntaxResult,
 } from "@ory/client-fetch"
 import {
+  relationshipOPLClient,
   relationshipReadClient,
   relationshipWriteClient,
 } from "../utils/clients"
 import { getLogger } from "@/lib/logger"
-import { loadOpl, type OplConfig } from "../utils/loadOpl"
+import { loadOpl } from "../utils/loadOpl"
+import { NamespacesWithRelation } from "../types"
 
 const log = getLogger(["app", "actions", "relationships"])
 
@@ -45,14 +47,29 @@ export async function deleteRelationships(
   log.info("Completed deleteRelationships", { req })
 }
 
-export async function getOpl(): Promise<OplConfig | null> {
-  return loadOpl()
+export async function getNamespaces(): Promise<NamespacesWithRelation | null> {
+  const local = await loadOpl()
+  if (local && local.namespaces.length > 0) return local
+
+  log.warn("OPL file not available — falling back to remote namespace list")
+
+  const api = relationshipReadClient()
+  const res = await api.listRelationshipNamespaces()
+  const names = (res.namespaces ?? [])
+    .map((n) => n.name)
+    .filter(Boolean) as string[]
+  if (names.length === 0) return null
+
+  return {
+    namespaces: names,
+    namespaceRelations: Object.fromEntries(names.map((n) => [n, []])),
+  }
 }
 
 export async function checkOplSyntax(
   data: string,
 ): Promise<CheckOplSyntaxResult> {
-  const api = relationshipWriteClient()
+  const api = relationshipOPLClient()
 
   return await api.checkOplSyntax({ body: data })
 }
