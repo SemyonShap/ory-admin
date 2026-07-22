@@ -1,15 +1,15 @@
 import "./globals.css"
 import { ReactNode } from "react"
 import { Metadata } from "next"
-import { Providers } from "@/components/custom/providers"
-import { panelSans, panelMono, panelSansMono, roboto } from "./fonts"
-import { Geist } from "next/font/google"
-import { cn } from "@/lib/utils"
+import { Inter } from "next/font/google"
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+import { cn } from "@/lib/utils"
+import { Providers } from "@/components/common/providers"
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 export const metadata: Metadata = {
-  title: "Jiko Admin Auth",
+  title: "Ory Admin",
 }
 
 export default function RootLayout({
@@ -18,17 +18,7 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html
-      className={cn(
-        "dark",
-        panelSans.variable,
-        panelMono.variable,
-        panelSansMono.variable,
-        roboto.variable,
-        "font-sans",
-        geist.variable,
-      )}
-    >
+    <html className={cn("dark", inter.variable)}>
       <body>
         <Providers>{children}</Providers>
       </body>

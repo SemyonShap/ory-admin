@@ -1,11 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function RootPage() {
   return (
     <div className="p-2">
       <Card className="flex-1">
         <CardHeader>
-          <CardTitle>Welcome to Jiko Auth Admin</CardTitle>
+          <CardTitle>Welcome to Ory Admin</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -14,5 +14,5 @@ export default function RootPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

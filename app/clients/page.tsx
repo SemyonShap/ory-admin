@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { toast } from "sonner";
-import { ClientRow } from "./clientRow";
-import { Spinner } from "@/components/ui/spinner";
-import { useDialogStore } from "@/store/dialogStore";
-import { PageError, PageLoader } from "@/components/custom";
-import { VirtualList } from "@/components/custom/virtualList";
-import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer";
-import { useClients } from "@/features/ory-admin/hooks/useClientsQuery";
+import { toast } from "sonner"
+import { ClientRow } from "./clientRow"
+import { Spinner } from "@/components/ui/spinner"
+import { useDialogStore } from "@/store/dialogStore"
+import { PageError, PageLoader } from "@/components/common"
+import { VirtualList } from "@/components/common/virtualList"
+import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer"
+import { useClients } from "@/features/ory-admin/hooks/useClientsQuery"
 
 export default function ClientsPage() {
   const {
@@ -17,36 +17,36 @@ export default function ClientsPage() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useClients({ pageSize: 100 });
-  const { openDialog } = useDialogStore();
+  } = useClients({ pageSize: 100 })
+  const { openDialog } = useDialogStore()
 
-  const allClients = data?.pages.flatMap((page) => page.data ?? []) ?? [];
+  const allClients = data?.pages.flatMap((page) => page.data ?? []) ?? []
 
   const { parentRef, rowVirtualizer } = useInfiniteVirtualizer({
     items: allClients,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  });
+  })
 
   const onInfoClick = (clientId: string) => {
     if (!clientId) {
-      toast.error("Client not found");
-      return;
+      toast.error("Client not found")
+      return
     }
-    openDialog("showClientInfo", { clientId });
-  };
+    openDialog("showClientInfo", { clientId })
+  }
 
   const onDeleteClick = (clientId: string) => {
     if (!clientId) {
-      toast.error("Client not found");
-      return;
+      toast.error("Client not found")
+      return
     }
-    openDialog("deleteClient", { clientId });
-  };
+    openDialog("deleteClient", { clientId })
+  }
 
-  if (isLoading) return PageLoader();
-  if (error) return PageError(error);
+  if (isLoading) return PageLoader()
+  if (error) return PageError(error)
 
   return (
     <div className="flex flex-col">
@@ -68,5 +68,5 @@ export default function ClientsPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

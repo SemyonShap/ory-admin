@@ -1,6 +1,6 @@
 import { Check, ChevronsUpDown, Plus, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
   Command,
@@ -44,18 +44,15 @@ function SelectedBadges({
             className="text-xs truncate max-w-48"
           >
             <span className="truncate">{option?.label || val}</span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="p-0"
+            <span
+              className="ml-1 cursor-pointer opacity-60 hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation()
                 onToggle(val)
               }}
             >
               <X className="h-3 w-3" />
-            </Button>
+            </span>
           </Badge>
         )
       })}

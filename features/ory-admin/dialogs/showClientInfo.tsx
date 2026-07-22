@@ -12,8 +12,8 @@ import {
 import { toast } from "sonner"
 import { useDialogStore } from "@/store/dialogStore"
 import { useIdentity, useClient } from "@/features/ory-admin/hooks"
-import CopyToClipboard from "@/components/custom/copyToClipboard"
-import { InfoFields } from "@/components/custom/infoFields"
+import CopyToClipboard from "@/components/common/copyToClipboard"
+import { InfoFields } from "@/components/common/infoFields"
 
 export default function ShowClientInfoDialog() {
   const { open, props, closeDialog, openDialog } = useDialogStore()

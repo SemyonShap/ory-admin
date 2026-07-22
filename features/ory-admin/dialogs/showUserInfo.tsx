@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Dialog,
@@ -6,26 +6,26 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useDialogStore } from "@/store/dialogStore";
-import { useEffect } from "react";
-import { toast } from "sonner";
-import { useUser } from "@/features/ory-admin/hooks";
-import CopyToClipboard from "@/components/custom/copyToClipboard";
-import { InfoFields } from "@/components/custom/infoFields";
+} from "@/components/ui/dialog"
+import { useDialogStore } from "@/store/dialogStore"
+import { useEffect } from "react"
+import { toast } from "sonner"
+import { useUser } from "@/features/ory-admin/hooks"
+import CopyToClipboard from "@/components/common/copyToClipboard"
+import { InfoFields } from "@/components/common/infoFields"
 
 export default function ShowUserInfoDialog() {
-  const { open, props, closeDialog } = useDialogStore();
-  const userId = (props?.userId as string) || "";
+  const { open, props, closeDialog } = useDialogStore()
+  const userId = (props?.userId as string) || ""
 
-  const { data: user, isLoading, error } = useUser({ id: userId });
+  const { data: user, isLoading, error } = useUser({ id: userId })
 
   useEffect(() => {
     if (error || (!user && !isLoading)) {
-      toast.error("Error loading user information");
-      closeDialog();
+      toast.error("Error loading user information")
+      closeDialog()
     }
-  }, [error, user, isLoading, closeDialog]);
+  }, [error, user, isLoading, closeDialog])
 
   const fields = user
     ? [
@@ -48,18 +48,20 @@ export default function ShowUserInfoDialog() {
         },
         { label: "State", value: user.state },
       ]
-    : [];
+    : []
 
   const infoText = fields
     .map((field) => `${field.label}: ${field.value || "N/A"}`)
-    .join("\n");
+    .join("\n")
 
   return (
     <Dialog key={userId} open={open} onOpenChange={closeDialog}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
         <DialogHeader className="flex flex-row justify-between items-start">
           <div className="flex flex-col gap-1">
-            <DialogTitle className="font-bold uppercase">User Information</DialogTitle>
+            <DialogTitle className="font-bold uppercase">
+              User Information
+            </DialogTitle>
             <DialogDescription>Details for user</DialogDescription>
           </div>
           <CopyToClipboard text={infoText} label="User information" />
@@ -67,5 +69,5 @@ export default function ShowUserInfoDialog() {
         <InfoFields fields={fields} isLoading={isLoading} />
       </DialogContent>
     </Dialog>
-  );
+  )
 }

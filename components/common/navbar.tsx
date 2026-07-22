@@ -1,19 +1,20 @@
-"use client";
+"use client"
 
-import { useSidebar } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { PanelLeft, MoreHorizontal, Plus } from "lucide-react";
+import { useSidebar } from "@/components/ui/sidebar"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { PanelLeft, MoreHorizontal, Plus } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useDialogStore } from "@/store/dialogStore";
+} from "@/components/ui/dropdown-menu"
+import { useDialogStore } from "@/store/dialogStore"
 
 export function AdminNavbar() {
-  const { toggleSidebar } = useSidebar();
-  const { openDialog } = useDialogStore();
+  const { toggleSidebar } = useSidebar()
+  const { openDialog } = useDialogStore()
 
   return (
     <nav className="w-full flex items-center justify-between p-4 border-b bg-background">
@@ -21,10 +22,13 @@ export function AdminNavbar() {
         <PanelLeft className="w-4 h-4" />
       </Button>
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button variant="ghost" size="icon">
-            <MoreHorizontal className="w-4 h-4" />
-          </Button>
+        <DropdownMenuTrigger
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "icon" }),
+            "cursor-default",
+          )}
+        >
+          <MoreHorizontal className="w-4 h-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => openDialog("createClient")}>
@@ -38,5 +42,5 @@ export function AdminNavbar() {
         </DropdownMenuContent>
       </DropdownMenu>
     </nav>
-  );
+  )
 }

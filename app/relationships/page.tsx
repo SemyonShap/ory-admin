@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { Spinner } from "@/components/ui/spinner";
-import { RelationshipRow } from "./relationshipRow";
-import { PageError, PageLoader } from "@/components/custom";
-import { VirtualList } from "@/components/custom/virtualList";
-import { useDialogStore } from "@/store/dialogStore";
-import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer";
-import { useRelationships } from "@/features/ory-admin/hooks/useRelationshipsQuery";
-import { Relationship } from "@ory/client-fetch";
+import { Spinner } from "@/components/ui/spinner"
+import { RelationshipRow } from "./relationshipRow"
+import { PageError, PageLoader } from "@/components/common"
+import { VirtualList } from "@/components/common/virtualList"
+import { useDialogStore } from "@/store/dialogStore"
+import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer"
+import { useRelationships } from "@/features/ory-admin/hooks/useRelationshipsQuery"
+import { Relationship } from "@ory/client-fetch"
 
 export default function RelationshipsPage() {
   const {
@@ -17,28 +17,28 @@ export default function RelationshipsPage() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useRelationships({ pageSize: 100 });
-  const { openDialog } = useDialogStore();
+  } = useRelationships({ pageSize: 100 })
+  const { openDialog } = useDialogStore()
 
-  const allRelationships = data?.pages.flatMap((page) => page.data ?? []) ?? [];
+  const allRelationships = data?.pages.flatMap((page) => page.data ?? []) ?? []
 
   const { parentRef, rowVirtualizer } = useInfiniteVirtualizer({
     items: allRelationships,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  });
+  })
 
   const onInfoClick = (rel: Relationship) => {
-    openDialog("showRelashionshipInfo", { relationship: rel });
-  };
+    openDialog("showRelashionshipInfo", { relationship: rel })
+  }
 
   const onDeleteClick = (rel: Relationship) => {
-    openDialog("deleteRelationship", { relationship: rel });
-  };
+    openDialog("deleteRelationship", { relationship: rel })
+  }
 
-  if (isLoading) return PageLoader();
-  if (error) return PageError(error);
+  if (isLoading) return PageLoader()
+  if (error) return PageError(error)
 
   return (
     <div>
@@ -67,5 +67,5 @@ export default function RelationshipsPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import * as React from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -11,13 +11,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { InputProps } from "../types";
+} from "@/components/ui/popover"
+import { InputProps } from "../types"
 
 export function ComboboxInput({
   field,
@@ -25,32 +25,30 @@ export function ComboboxInput({
   handlers,
   invalid,
 }: InputProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
-  const options = config.options ?? [];
-  const placeholder = config.placeholder || "Select...";
+  const options = config.options ?? []
+  const placeholder = config.placeholder || "Select..."
   const onInputChange = handlers?.onInputChange as
     | ((value: string) => void)
-    | undefined;
+    | undefined
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className={cn(
-            "w-full justify-between font-normal",
-            invalid && "border-destructive ring-destructive",
-          )}
-        >
-          {field.value
-            ? options.find((option) => option.value === field.value)?.label ||
-              field.value
-            : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+      <PopoverTrigger
+        role="combobox"
+        aria-expanded={open}
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "w-full justify-between font-normal",
+          invalid && "border-destructive ring-destructive",
+        )}
+      >
+        {field.value
+          ? options.find((option) => option.value === field.value)?.label ||
+            field.value
+          : placeholder}
+        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
@@ -68,9 +66,9 @@ export function ComboboxInput({
                   value={option.label}
                   onSelect={() => {
                     const newValue =
-                      option.value === field.value ? "" : option.value;
-                    field.onChange(newValue);
-                    setOpen(false);
+                      option.value === field.value ? "" : option.value
+                    field.onChange(newValue)
+                    setOpen(false)
                   }}
                 >
                   <Check
@@ -89,5 +87,5 @@ export function ComboboxInput({
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

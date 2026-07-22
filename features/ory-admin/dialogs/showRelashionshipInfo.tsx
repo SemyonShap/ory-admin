@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Dialog,
@@ -6,34 +6,34 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useDialogStore } from "@/store/dialogStore";
-import { Relationship } from "@ory/client-fetch";
-import CopyToClipboard from "@/components/custom/copyToClipboard";
-import { InfoField, InfoFields } from "@/components/custom/infoFields";
+} from "@/components/ui/dialog"
+import { useDialogStore } from "@/store/dialogStore"
+import { Relationship } from "@ory/client-fetch"
+import CopyToClipboard from "@/components/common/copyToClipboard"
+import { InfoField, InfoFields } from "@/components/common/infoFields"
 
 export default function ShowRelashionshipInfoDialog() {
-  const { open, props, closeDialog, openDialog } = useDialogStore();
-  const relationship = props?.relationship as Relationship | undefined;
+  const { open, props, closeDialog, openDialog } = useDialogStore()
+  const relationship = props?.relationship as Relationship | undefined
 
-  const fields: InfoField[] = [];
+  const fields: InfoField[] = []
 
   if (relationship) {
     fields.push(
       { label: "Namespace", value: relationship.namespace },
       { label: "Object", value: relationship.object },
       { label: "Relation", value: relationship.relation },
-    );
+    )
 
     if (relationship.subject_id) {
       const subjectField: InfoField = {
         label: "Subject ID",
         value: relationship.subject_id,
         onClick: () => {
-          openDialog("showUserInfo", { userId: relationship.subject_id });
+          openDialog("showUserInfo", { userId: relationship.subject_id })
         },
-      };
-      fields.push(subjectField);
+      }
+      fields.push(subjectField)
     } else if (relationship.subject_set) {
       fields.push(
         {
@@ -45,13 +45,13 @@ export default function ShowRelashionshipInfoDialog() {
           label: "Subject Relation",
           value: relationship.subject_set.relation,
         },
-      );
+      )
     }
   }
 
   const infoText = fields
     .map((field) => `${field.label}: ${field.value || "N/A"}`)
-    .join("\n");
+    .join("\n")
 
   return (
     <Dialog key={relationship?.object} open={open} onOpenChange={closeDialog}>
@@ -70,5 +70,5 @@ export default function ShowRelashionshipInfoDialog() {
         <InfoFields fields={fields} />
       </DialogContent>
     </Dialog>
-  );
+  )
 }
