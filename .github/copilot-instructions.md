@@ -1,0 +1,6 @@
+- Be extremely concise. Output only what is strictly requested.
+- Skip all greetings, polite fluff, and introductory phrases (e.g., "Sure, I can help...", "Here is the code...").
+- Skip all conclusions, summaries, and closing remarks.
+- Output ONLY the modified or new lines of code. Never restate unchanged functions or entire files.
+- Do not write comments inside the code and do not explain obvious syntax.
+- Keep the response in a strict "Q&A" style without meta-commentary or explanations.
