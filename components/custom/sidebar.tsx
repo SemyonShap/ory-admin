@@ -35,7 +35,7 @@ export function AdminSidebar() {
           <div className="flex flex-col gap-1">
             {items.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={pathname === item.href}>
+                <SidebarMenuButton isActive={pathname === item.href}>
                   <Link href={item.href} className="flex items-start gap-4 font-heading">
                     <item.icon className="self-center" />
                     {item.label}

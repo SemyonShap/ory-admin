@@ -106,7 +106,7 @@ export function MultiSelectInput({
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <div
           aria-expanded={open}
           className={cn(

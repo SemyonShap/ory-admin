@@ -21,7 +21,7 @@ export function AdminNavbar() {
         <PanelLeft className="w-4 h-4" />
       </Button>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger>
           <Button variant="ghost" size="icon">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
