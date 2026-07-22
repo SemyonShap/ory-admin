@@ -65,5 +65,3 @@ export const createClientSchema = z.object({
       interface: "select",
     }),
 })
-
-export type CreateClientFormData = z.infer<typeof createClientSchema>

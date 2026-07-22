@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# Keto OPL
+namespaces.ts
+
 # production
 /build
 

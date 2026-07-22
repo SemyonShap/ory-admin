@@ -5,12 +5,14 @@ import {
   CreateRelationshipRequest,
   Relationship,
   DeleteRelationshipsRequest,
+  CheckOplSyntaxResult,
 } from "@ory/client-fetch"
 import {
   relationshipReadClient,
   relationshipWriteClient,
 } from "../utils/clients"
 import { getLogger } from "@/lib/logger"
+import { loadOpl, type OplConfig } from "../utils/loadOpl"
 
 const log = getLogger(["app", "actions", "relationships"])
 
@@ -41,4 +43,16 @@ export async function deleteRelationships(
   await api.deleteRelationships(req)
 
   log.info("Completed deleteRelationships", { req })
+}
+
+export async function getOpl(): Promise<OplConfig | null> {
+  return loadOpl()
+}
+
+export async function checkOplSyntax(
+  data: string,
+): Promise<CheckOplSyntaxResult> {
+  const api = relationshipWriteClient()
+
+  return await api.checkOplSyntax({ body: data })
 }

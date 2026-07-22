@@ -42,7 +42,7 @@ export default function RelationshipsPage() {
 
   return (
     <div>
-      <div className="flex items-center border-b gap-4 p-2 ">
+      <div className="flex items-center border-b gap-4 p-2 text-muted-foreground">
         <div className="flex-1">Namespace</div>
         <div className="flex-1">Object</div>
         <div className="flex-1">Relation</div>

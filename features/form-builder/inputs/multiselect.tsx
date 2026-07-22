@@ -169,7 +169,7 @@ export function MultiSelectInput({
                     }}
                   >
                     <Plus className="mr-2 h-4 w-4" />
-                    Create "{search}"
+                    <span>Create {search}</span>
                   </CommandItem>
                 </CommandGroup>
               </>

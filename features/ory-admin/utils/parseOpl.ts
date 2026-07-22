@@ -1,4 +1,3 @@
-import fs from "node:fs"
 import { Node, Project, TypeNode } from "ts-morph"
 
 export interface RelationTarget {
@@ -16,13 +15,7 @@ export interface NamespaceInfo {
   relations: RelationInfo[]
 }
 
-/**
- * Парсит OPL-файл (namespaces.ts) в список namespace'ов и их relations.
- * Принимает путь на диске — например, файл, смонтированный в контейнер
- * через volume/ConfigMap в рантайме.
- */
-export function parseOPL(filePath: string): NamespaceInfo[] {
-  const source = fs.readFileSync(filePath, "utf-8")
+export function parseOPL(source: string): NamespaceInfo[] {
 
   const project = new Project({ useInMemoryFileSystem: true })
   const sourceFile = project.createSourceFile("namespaces.ts", source)
