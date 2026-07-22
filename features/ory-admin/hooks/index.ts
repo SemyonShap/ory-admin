@@ -9,6 +9,6 @@ export {
   useRelationships,
   useCreateRelationship,
   useDeleteRelationships,
-  useOpl,
+  useNamespaces as useOpl,
 } from "./useRelationshipsQuery"
 export { useHealth } from "./useHealthQuery"

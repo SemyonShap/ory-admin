@@ -1,0 +1,29 @@
+# Ory Admin Panel
+
+⚠️ **Work in progress — not stable yet.**
+
+Admin UI for Ory, built with Next.js 16, React 19, Tailwind 4, Zod, React Hook Form, and TanStack Query.
+
+## Quick start
+
+```bash
+make install
+make dev
+```
+
+Open http://localhost:9000
+
+## Docker
+
+```bash
+make docker-build
+make docker-run
+```
+
+## Checks
+
+```bash
+make lint
+make typecheck
+make all
+```

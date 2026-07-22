@@ -9,7 +9,8 @@ import {
   hydraAdminUrl,
   ketoWriteUrl,
   ketoReadUrl,
-} from "@/lib/sdk"
+  ketoOplUrl,
+} from "@/lib/env"
 
 const jsonConfig = (basePath: string) =>
   new Configuration({
@@ -28,3 +29,6 @@ export const relationshipReadClient = () =>
 
 export const relationshipWriteClient = () =>
   new RelationshipApi(jsonConfig(ketoWriteUrl()))
+
+export const relationshipOPLClient = () =>
+  new RelationshipApi(jsonConfig(ketoOplUrl()))

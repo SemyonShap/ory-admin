@@ -1,6 +1,6 @@
 "use server"
 
-import { kratosAdminUrl, hydraAdminUrl, ketoWriteUrl } from "@/lib/sdk"
+import { kratosAdminUrl, hydraAdminUrl, ketoWriteUrl } from "@/lib/env"
 
 export interface ServiceHealth {
   name: string

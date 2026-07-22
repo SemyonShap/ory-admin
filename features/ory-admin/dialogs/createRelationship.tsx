@@ -4,7 +4,7 @@ import { toast } from "sonner"
 import { useState, useMemo } from "react"
 import {
   useCreateRelationship,
-  useOpl,
+  useNamespaces,
 } from "@/features/ory-admin/hooks/useRelationshipsQuery"
 import { useDialogStore } from "@/store/dialogStore"
 import { CreateRelationshipBody } from "@ory/client-fetch"
@@ -16,7 +16,7 @@ import { useDebounce } from "@/hooks/useDebounce"
 export default function CreateRelationshipDialog() {
   const { open, closeDialog } = useDialogStore()
   const createRelationshipMutation = useCreateRelationship()
-  const { data: oplConfig } = useOpl()
+  const { data: oplConfig } = useNamespaces()
 
   const [subjectQuery, setSubjectQuery] = useState("")
   const debouncedQuery = useDebounce(subjectQuery, 400)

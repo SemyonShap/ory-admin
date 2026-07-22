@@ -15,10 +15,12 @@ export interface NamespaceInfo {
   relations: RelationInfo[]
 }
 
-export function parseOPL(source: string): NamespaceInfo[] {
+const project = new Project({ useInMemoryFileSystem: true })
 
-  const project = new Project({ useInMemoryFileSystem: true })
-  const sourceFile = project.createSourceFile("namespaces.ts", source)
+export function parseOPL(source: string): NamespaceInfo[] {
+  const sourceFile = project.createSourceFile("namespaces.ts", source, {
+    overwrite: true,
+  })
 
   const namespaceClasses = sourceFile
     .getClasses()
