@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/SemyonShap/ory-admin
+  repository: ghcr.io/semyonshap/ory-admin
   tag: 0.1.0
   pullPolicy: IfNotPresent
 
