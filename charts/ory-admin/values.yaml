@@ -1,0 +1,90 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/SemyonShap/ory-admin
+  tag: 0.1.0
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: ""
+  automount: false
+
+service:
+  port: 9000
+  targetPort: 9000
+
+deployment:
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+
+livenessProbe:
+  path: /api/health
+  initialDelaySeconds: 15
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+readinessProbe:
+  path: /api/health
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+startupProbe:
+  path: /api/health
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 30
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+pod:
+  securityContext:
+    runAsUser: 65534
+    runAsGroup: 65534
+    fsGroup: 65534
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: [ALL]
+  terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+tolerations: []
+
+extraConfigmaps:
+  # - name: opl
+  #   mountPath: /app/namespaces.ts
+  #   data:
+  #     namespaces.ts: |
+  #       ...content
+
+env:
+  KRATOS_ADMIN_URL: ""
+  HYDRA_ADMIN_URL: ""
+  KETO_OPL_URL: ""
+  KETO_READ_URL: ""
+  KETO_WRITE_URL: ""
+  KETO_OPL_PATH: "/app/namespaces.ts"
+
+extraEnvVars: []
+
+extraEnvSecrets: []
+# - name: SECRET_KEY
+#   secretName: my-secret
+#   secretKey: secret-key

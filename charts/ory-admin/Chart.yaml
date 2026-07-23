@@ -1,0 +1,26 @@
+apiVersion: v2
+name: ory-admin
+description: A Helm chart for deploying ory-admin — Next.js admin panel for Ory stack (Kratos, Hydra, Keto)
+
+type: application
+
+version: 0.1.0
+appVersion: 0.1.0
+
+home: https://github.com/SemyonShap/ory-admin
+icon: https://ory.com/favicon.ico
+sources:
+  - https://github.com/SemyonShap/ory-admin
+keywords:
+  - ory
+  - kratos
+  - hydra
+  - keto
+  - admin
+  - nextjs
+
+maintainers:
+  - name: SemyonShap
+    email: SemyonShapoval@gmail.com
+
+dependencies: []
