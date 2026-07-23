@@ -1,19 +1,10 @@
 name: Release Helm Chart
 
 on:
-  push:
-    tags:
-      - "v*" # Trigger only on version tags
   workflow_dispatch:
-    inputs:
-      version:
-        description: "App version (overrides tag)"
-        required: false
-        type: string
 
 permissions:
-  contents: write # For GitHub Release
-  packages: write # For GHCR (OCI) push
+  packages: write
 
 jobs:
   release:
@@ -21,22 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      # Extract app version from tag (e.g., v1.2.3 -> 1.2.3)
-      - name: Extract app version from tag
-        id: app-version
-        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
-
-      # Update appVersion (in Chart.yaml) and image tag (in values.yaml)
-      # The chart's own 'version' field remains untouched.
-      - name: Update appVersion and image tag in chart
-        run: |
-          sed -i "s/^appVersion:.*/appVersion: ${{ steps.app-version.outputs.version }}/" charts/ory-admin/Chart.yaml
-          sed -i "s/^  tag:.*/  tag: ${{ steps.app-version.outputs.version }}/" charts/ory-admin/values.yaml
-
-      # Read the actual chart version from Chart.yaml (source of truth for the chart)
       - name: Get chart version from Chart.yaml
         id: chart-version
         run: |
@@ -50,25 +26,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Check if the chart version already exists in the OCI registry
-      - name: Check if chart version already exists
-        id: check
-        run: |
-          if docker manifest inspect ghcr.io/${{ github.repository_owner }}/helm:${{ steps.chart-version.outputs.version }} > /dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-        continue-on-error: true # Safe fallback; we set exists=false on failure
-
-      # Package the chart only
       - name: Package Helm chart
-        if: steps.check.outputs.exists == 'false'
         run: |
           helm package charts/ory-admin --destination .release
 
-      # Push to GHCR (OCI)
       - name: Push Helm chart to GHCR
-        if: steps.check.outputs.exists == 'false'
         run: |
           helm push .release/ory-admin-${{ steps.chart-version.outputs.version }}.tgz oci://ghcr.io/${{ github.repository_owner }}/helm
