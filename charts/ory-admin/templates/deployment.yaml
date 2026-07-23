@@ -86,6 +86,9 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
               readOnly: {{ .readOnly | default true }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
           {{- end }}
           {{- end }}
 
@@ -94,6 +97,6 @@ spec:
       {{- range . }}
         - name: {{ .name }}
           configMap:
-            name: {{ include "common.fullname" $ }}-{{ .name }}
+            name: {{ .name }}
       {{- end }}
       {{- end }}

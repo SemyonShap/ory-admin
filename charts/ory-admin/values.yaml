@@ -80,7 +80,7 @@ env:
   KETO_OPL_URL: ""
   KETO_READ_URL: ""
   KETO_WRITE_URL: ""
-  KETO_OPL_PATH: "/app/namespaces.ts"
+  KETO_OPL_PATH: "/etc/keto/namespaces.ts"
 
 extraEnvVars: []
 
