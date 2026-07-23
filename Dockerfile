@@ -18,6 +18,9 @@ USER node
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
-EXPOSE 3005
+ENV PORT=9000
+ENV HOSTNAME="0.0.0.0"
+
+EXPOSE 9000
 
 CMD ["node", "server.js"]
