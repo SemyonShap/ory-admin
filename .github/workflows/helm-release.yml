@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - "v*" # Trigger only on version tags
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "App version (overrides tag)"
+        required: false
+        type: string
 
 permissions:
   contents: write # For GitHub Release
