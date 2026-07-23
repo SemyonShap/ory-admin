@@ -62,7 +62,7 @@ jobs:
       - name: Check if chart version already exists
         id: check
         run: |
-          if docker manifest inspect ghcr.io/${{ steps.owner.outputs.owner }}/ory-admin:${{ steps.chart-version.outputs.version }} > /dev/null 2>&1; then
+          if docker manifest inspect ghcr.io/${{ steps.owner.outputs.owner }}/ory-admin-helm:${{ steps.chart-version.outputs.version }} > /dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -79,4 +79,4 @@ jobs:
       - name: Push Helm chart to GHCR
         if: steps.check.outputs.exists == 'false'
         run: |
-          helm push .release/ory-admin-${{ steps.chart-version.outputs.version }}.tgz oci://ghcr.io/${{ steps.owner.outputs.owner }}/ory-admin
+          helm push .release/ory-admin-${{ steps.chart-version.outputs.version }}.tgz oci://ghcr.io/${{ steps.owner.outputs.owner }}/ory-admin-helm
