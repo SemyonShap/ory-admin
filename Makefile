@@ -1,7 +1,7 @@
 .PHONY: help install dev build lint typecheck start start-standalone docker-build docker-run clean all
 
 IMAGE_NAME ?= ory-admin
-PORT ?= 9000
+PORT ?= 8080
 
 help: ## Show this help message
 	@awk '/^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, substr($$0, index($$0, "##")+3)}' $(MAKEFILE_LIST)

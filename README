@@ -11,7 +11,7 @@ make install
 make dev
 ```
 
-Open http://localhost:9000
+Open http://localhost:8080
 
 ## Docker
 
