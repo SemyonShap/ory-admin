@@ -31,12 +31,6 @@ docker-build: ## Build Docker image
 docker-run: ## Run Docker container (port $(PORT))
 	docker run -p $(PORT):$(PORT) $(IMAGE_NAME)
 
-helm-lint: ## Lint Helm Chart
-	helm lint ./charts/ory-admin --strict
-
-helm-template: ## Template Helm Chart
-	helm template my-release ./charts/ory-admin --debug
-
 clean: ## Remove node_modules and .next
 	rm -rf node_modules .next
 
