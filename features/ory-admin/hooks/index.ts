@@ -1,4 +1,9 @@
-export { useIdentity, useUser, useUsers } from "./useUsersQuery"
+export {
+  useIdentity,
+  useUser,
+  useUsers,
+  useSetUserState,
+} from "./useUsersQuery"
 export {
   useClient,
   useClients,
@@ -11,4 +16,11 @@ export {
   useDeleteRelationships,
   useNamespaces as useOpl,
 } from "./useRelationshipsQuery"
-export { useHealth } from "./useHealthQuery"
+export { useServiceHealth } from "./useHealthQuery"
+export { useServers } from "./useServersQuery"
+export {
+  useApiKeys,
+  useApiKey,
+  useCreateApiKey,
+  useRevokeApiKey,
+} from "./useApiKeysQuery"

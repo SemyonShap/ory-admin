@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Users, Briefcase, Network } from "lucide-react"
+import { Home, Users, Briefcase, Network, KeyRound } from "lucide-react"
 
 import {
   Sidebar,
@@ -18,13 +18,15 @@ export function AdminSidebar() {
   const pathname = usePathname()
 
   const items = [
+    { href: "/", label: "Home", icon: Home },
     { href: "/users", label: "Users", icon: Users },
     { href: "/clients", label: "Clients", icon: Briefcase },
     { href: "/relationships", label: "Relationships", icon: Network },
+    { href: "/tokens", label: "Tokens", icon: KeyRound },
   ]
 
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       <SidebarHeader className="pt-6 pb-4 px-6">
         <Link href="/" className="flex items-center">
           <MainIcon className="h-8 w-auto" />

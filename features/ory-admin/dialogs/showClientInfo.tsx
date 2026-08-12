@@ -13,7 +13,7 @@ import { toast } from "sonner"
 import { useDialogStore } from "@/store/dialogStore"
 import { useIdentity, useClient } from "@/features/ory-admin/hooks"
 import CopyToClipboard from "@/components/common/copyToClipboard"
-import { InfoFields } from "@/components/common/infoFields"
+import { InfoFields, buildInfoFields } from "@/components/common/infoFields"
 
 export default function ShowClientInfoDialog() {
   const { open, props, closeDialog, openDialog } = useDialogStore()
@@ -31,23 +31,6 @@ export default function ShowClientInfoDialog() {
 
   const fields = client
     ? [
-        { label: "ID", value: client.client_id },
-        { label: "Name", value: client.client_name },
-        { label: "Grant Types", value: client.grant_types },
-        {
-          label: "Token Endpoint Auth Method",
-          value: client.token_endpoint_auth_method,
-        },
-        {
-          label: "Scopes",
-          value: client.scope,
-        },
-        { label: "Audience", value: client.audience },
-        { label: "Redirect URIs", value: client.redirect_uris },
-        {
-          label: "Post Logout URIs",
-          value: client.post_logout_redirect_uris,
-        },
         {
           label: "Owner",
           value:
@@ -61,18 +44,18 @@ export default function ShowClientInfoDialog() {
             }
           },
         },
-        {
-          label: "Created At",
-          value: client.created_at
-            ? new Date(client.created_at).toLocaleString()
-            : undefined,
-        },
-        {
-          label: "Updated At",
-          value: client.updated_at
-            ? new Date(client.updated_at).toLocaleString()
-            : undefined,
-        },
+        ...buildInfoFields(client, [
+          "client_id",
+          "client_name",
+          "grant_types",
+          "token_endpoint_auth_method",
+          "scope",
+          "audience",
+          "redirect_uris",
+          "post_logout_redirect_uris",
+          "created_at",
+          "updated_at",
+        ]),
       ]
     : []
 
@@ -93,7 +76,7 @@ export default function ShowClientInfoDialog() {
             </DialogTitle>
             <DialogDescription>Details for OAuth2 client</DialogDescription>
           </div>
-          <CopyToClipboard text={infoText} label="Client information" />
+          <CopyToClipboard text={infoText} />
         </DialogHeader>
         <InfoFields fields={fields} isLoading={isLoading} />
       </DialogContent>

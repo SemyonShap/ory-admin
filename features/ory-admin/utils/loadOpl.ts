@@ -1,25 +1,28 @@
 import fs from "node:fs"
-import path from "node:path"
 import { parseOPL } from "./parseOpl"
 import { checkOplSyntax } from "../actions/relationships"
 import { getLogger } from "@/lib/logger"
-import { oplUrlEnv, oplPathEnv } from "@/lib/env"
+import { serverServiceUrl, serverOplPath } from "@/lib/servers"
 import { NamespacesWithRelation } from "../types"
 
 const log = getLogger(["app", "utils", "loadOpl"])
 
-let cached: Promise<NamespacesWithRelation> | null = null
+const cache = new Map<string, Promise<NamespacesWithRelation>>()
 
-export function loadOpl(): Promise<NamespacesWithRelation> {
+export function loadOpl(server: string): Promise<NamespacesWithRelation> {
+  const cached = cache.get(server)
   if (cached) return cached
 
-  cached = (async () => {
+  const promise = (async () => {
     const fallback = {
       namespaces: [],
       namespaceRelations: {},
     }
-    const extraPath = oplPathEnv()
-    const filepath = extraPath ?? path.join(process.cwd(), "namespaces.ts")
+    const filepath = serverOplPath(server)
+    if (!filepath) {
+      log.warn("No OPL path configured for server", { server })
+      return fallback
+    }
 
     let source: string
     try {
@@ -34,8 +37,8 @@ export function loadOpl(): Promise<NamespacesWithRelation> {
       return fallback
     }
 
-    if (oplUrlEnv()) {
-      const { errors } = await checkOplSyntax(source)
+    if (serverServiceUrl(server, "keto_opl")) {
+      const { errors } = await checkOplSyntax(server, source)
       if (errors) {
         log.error("OPL syntax errors:", { errors })
         return fallback
@@ -56,5 +59,6 @@ export function loadOpl(): Promise<NamespacesWithRelation> {
     }
   })()
 
-  return cached
+  cache.set(server, promise)
+  return promise
 }

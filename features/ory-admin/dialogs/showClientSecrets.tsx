@@ -37,7 +37,7 @@ export default function ShowClientSecretsDialog() {
                 readOnly
                 className="flex-1"
               />
-              <CopyToClipboard text={clientId} label="Client ID" />
+              <CopyToClipboard text={clientId}/>
             </div>
           </div>
           {clientSecret && (
@@ -51,7 +51,7 @@ export default function ShowClientSecretsDialog() {
                   type="password"
                   className="flex-1"
                 />
-                <CopyToClipboard text={clientSecret} label="Client Secret" />
+                <CopyToClipboard text={clientSecret} />
               </div>
             </div>
           )}

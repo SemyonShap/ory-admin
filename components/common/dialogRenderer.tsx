@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import React, { Suspense } from "react";
-import dynamic from "next/dynamic";
-import { useDialogStore } from "@/store/dialogStore";
-import { Spinner } from "@/components/ui/spinner";
+import React, { Suspense } from "react"
+import dynamic from "next/dynamic"
+import { useDialogStore } from "@/store/dialogStore"
+import { Spinner } from "@/components/ui/spinner"
 
 interface DialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  [key: string]: unknown;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  [key: string]: unknown
 }
 
 const dialogComponentsMap: Record<string, React.ComponentType<DialogProps>> = {
@@ -44,18 +44,34 @@ const dialogComponentsMap: Record<string, React.ComponentType<DialogProps>> = {
     () => import("@/features/ory-admin/dialogs/showRelashionshipInfo"),
     { ssr: false },
   ),
-};
+  showApiKeyInfo: dynamic<DialogProps>(
+    () => import("@/features/ory-admin/dialogs/showApiKeyInfo"),
+    { ssr: false },
+  ),
+  revokeApiKey: dynamic<DialogProps>(
+    () => import("@/features/ory-admin/dialogs/revokeApiKey"),
+    { ssr: false },
+  ),
+  createApiKey: dynamic<DialogProps>(
+    () => import("@/features/ory-admin/dialogs/createApiKey"),
+    { ssr: false },
+  ),
+  showApiKeySecret: dynamic<DialogProps>(
+    () => import("@/features/ory-admin/dialogs/showApiKeySecret"),
+    { ssr: false },
+  ),
+}
 
 function DialogManager(): React.JSX.Element | null {
-  const { type, open, props, closeDialog } = useDialogStore();
+  const { type, open, props, closeDialog } = useDialogStore()
 
-  if (!open || !type) return null;
+  if (!open || !type) return null
 
-  const Component = dialogComponentsMap[type];
+  const Component = dialogComponentsMap[type]
 
   if (!Component) {
-    console.error(`Dialog component for type "${type}" not found`);
-    return null;
+    console.error(`Dialog component for type "${type}" not found`)
+    return null
   }
 
   return (
@@ -72,9 +88,9 @@ function DialogManager(): React.JSX.Element | null {
         {...(props as Record<string, unknown>)}
       />
     </Suspense>
-  );
+  )
 }
 
 export function DialogRenderer(): React.JSX.Element {
-  return <DialogManager />;
+  return <DialogManager />
 }

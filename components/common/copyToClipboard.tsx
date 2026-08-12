@@ -4,16 +4,15 @@ import { toast } from "sonner"
 
 interface CopyToClipboardProps {
   text: string
-  label: string
 }
 
-export default function CopyToClipboard({ text, label }: CopyToClipboardProps) {
+export default function CopyToClipboard({ text }: CopyToClipboardProps) {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success(`${label} copied to clipboard`)
+      toast.success(`Copied to clipboard`)
     } catch {
-      toast.error(`Failed to copy ${label}`)
+      toast.error(`Failed to copy`)
     }
   }
 

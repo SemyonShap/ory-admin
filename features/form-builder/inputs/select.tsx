@@ -5,11 +5,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { InputProps } from "../types"
 
 export function SelectInput({ field, config, handlers, invalid }: InputProps) {
-  const options = config.options ?? []
+  const options = useMemo(() => config.options ?? [], [config.options])
   const disabled = options.length === 0
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function SelectInput({ field, config, handlers, invalid }: InputProps) {
     ) {
       field.onChange("")
     }
-  }, [options])
+  }, [field, options])
 
   return (
     <Select

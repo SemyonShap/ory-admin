@@ -1,16 +1,15 @@
 "use client"
 
-import { toast } from "sonner"
-import { ClientRow } from "./clientRow"
+import { ToekenRow } from "./tokenRow"
 import { Spinner } from "@/components/ui/spinner"
 import { useDialogStore } from "@/store/dialogStore"
 import { useServerStore } from "@/store/serverStore"
 import { PageError, PageLoader, PageEmpty } from "@/components/common"
 import { VirtualList } from "@/components/common/virtualList"
 import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer"
-import { useClients } from "@/features/ory-admin/hooks/useClientsQuery"
+import { useApiKeys } from "@/features/ory-admin/hooks/useApiKeysQuery"
 
-export default function ClientsPage() {
+export default function TokensPage() {
   const {
     data,
     fetchNextPage,
@@ -18,50 +17,46 @@ export default function ClientsPage() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useClients({ pageSize: 100 })
+  } = useApiKeys({ pageSize: 100 })
   const { openDialog } = useDialogStore()
   const serversLoading = useServerStore((s) => s.isLoading)
 
-  const allClients = data?.pages.flatMap((page) => page.data ?? []) ?? []
+  const allKeys = data?.pages.flatMap((page) => page.data ?? []) ?? []
 
   const { parentRef, rowVirtualizer } = useInfiniteVirtualizer({
-    items: allClients,
+    items: allKeys,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   })
 
-  const onInfoClick = (clientId: string) => {
-    if (!clientId) {
-      toast.error("Client not found")
-      return
-    }
-    openDialog("showClientInfo", { clientId })
-  }
-
-  const onDeleteClick = (clientId: string) => {
-    if (!clientId) {
-      toast.error("Client not found")
-      return
-    }
-    openDialog("deleteClient", { clientId })
-  }
+  const onInfoClick = (keyId: string) => openDialog("showApiKeyInfo", { keyId })
+  const onRevokeClick = (keyId: string) => openDialog("revokeApiKey", { keyId })
 
   if (serversLoading || isLoading) return PageLoader()
   if (error) return PageError(error)
-  if (allClients.length === 0) return PageEmpty("No clients found")
+  if (allKeys.length === 0) return PageEmpty("No API keys found")
 
   return (
-    <div className="flex flex-col">
+    <div>
+      <div className="flex items-center border-b gap-4 p-2 text-muted-foreground">
+        <div className="flex-1">Name</div>
+        <div className="flex-1">Key ID</div>
+        <div className="flex-1">Actor</div>
+        <div className="flex-1">Scopes</div>
+        <div className="w-24">Created</div>
+        <div className="w-24">Status</div>
+        <div className="w-10" />
+      </div>
       <VirtualList
         parentRef={parentRef}
         rowVirtualizer={rowVirtualizer}
-        items={allClients}
-        renderRow={(client) => (
-          <ClientRow
-            client={client}
+        items={allKeys}
+        renderRow={(toeken) => (
+          <ToekenRow
+            toeken={toeken}
             onInfoClick={onInfoClick}
-            onDeleteClick={onDeleteClick}
+            onRevokeClick={onRevokeClick}
           />
         )}
       />

@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useDialogStore } from "@/store/dialogStore"
+import { ServerSelector } from "@/components/common/serverSelector"
 
 export function AdminNavbar() {
   const { toggleSidebar } = useSidebar()
@@ -18,9 +19,13 @@ export function AdminNavbar() {
 
   return (
     <nav className="w-full flex items-center justify-between p-4 border-b bg-background">
-      <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-        <PanelLeft className="w-4 h-4" />
-      </Button>
+      <div className="flex items-center gap-4">
+        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+          <PanelLeft className="w-4 h-4" />
+        </Button>
+        <ServerSelector />
+      </div>
+
       <DropdownMenu>
         <DropdownMenuTrigger
           className={cn(
@@ -34,6 +39,10 @@ export function AdminNavbar() {
           <DropdownMenuItem onClick={() => openDialog("createClient")}>
             <Plus className="h-4 w-4" />
             Client
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => openDialog("createApiKey")}>
+            <Plus className="h-4 w-4" />
+            API Key
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => openDialog("createRelationship")}>
             <Plus className="h-4 w-4" />

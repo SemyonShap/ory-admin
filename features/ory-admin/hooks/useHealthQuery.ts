@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query"
-import { getHealth, type ServiceHealth } from "../actions/health"
+import { getServiceHealth, type ServiceHealth } from "../actions/health"
+import type { ServerServices } from "@/lib/servers"
 
-export function useHealth() {
-  return useQuery<ServiceHealth[]>({
-    queryKey: ["health"],
-    queryFn: getHealth,
-    refetchInterval: 15_000,
-    staleTime: 10_000,
+export function useServiceHealth(server: string, service: string) {
+  return useQuery<ServiceHealth>({
+    queryKey: ["health", server, service],
+    queryFn: () => getServiceHealth(server, service as keyof ServerServices),
+    enabled: !!server && !!service,
+    refetchInterval: 60_000,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
     retry: false,
   })
 }

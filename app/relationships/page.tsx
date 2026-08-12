@@ -2,9 +2,10 @@
 
 import { Spinner } from "@/components/ui/spinner"
 import { RelationshipRow } from "./relationshipRow"
-import { PageError, PageLoader } from "@/components/common"
+import { PageError, PageLoader, PageEmpty } from "@/components/common"
 import { VirtualList } from "@/components/common/virtualList"
 import { useDialogStore } from "@/store/dialogStore"
+import { useServerStore } from "@/store/serverStore"
 import { useInfiniteVirtualizer } from "@/hooks/useInfiniteVirtualizer"
 import { useRelationships } from "@/features/ory-admin/hooks/useRelationshipsQuery"
 import { Relationship } from "@ory/client-fetch"
@@ -19,6 +20,7 @@ export default function RelationshipsPage() {
     error,
   } = useRelationships({ pageSize: 100 })
   const { openDialog } = useDialogStore()
+  const serversLoading = useServerStore((s) => s.isLoading)
 
   const allRelationships = data?.pages.flatMap((page) => page.data ?? []) ?? []
 
@@ -37,8 +39,9 @@ export default function RelationshipsPage() {
     openDialog("deleteRelationship", { relationship: rel })
   }
 
-  if (isLoading) return PageLoader()
+  if (serversLoading || isLoading) return PageLoader()
   if (error) return PageError(error)
+  if (allRelationships.length === 0) return PageEmpty("No relationships found")
 
   return (
     <div>

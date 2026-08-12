@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/tmp
 /.pnp
 .pnp.*
 .yarn/*
@@ -16,9 +17,6 @@
 # next.js
 /.next/
 /out/
-
-# Keto OPL
-namespaces.ts
 
 # production
 /build

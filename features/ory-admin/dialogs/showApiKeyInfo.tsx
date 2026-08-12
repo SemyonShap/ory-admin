@@ -10,29 +10,33 @@ import {
 import { useDialogStore } from "@/store/dialogStore"
 import { useEffect } from "react"
 import { toast } from "sonner"
-import { useUser } from "@/features/ory-admin/hooks"
-import CopyToClipboard from "@/components/common/copyToClipboard"
+import { useApiKey } from "@/features/ory-admin/hooks"
 import { InfoFields, buildInfoFields } from "@/components/common/infoFields"
+import CopyToClipboard from "@/components/common/copyToClipboard"
 
-export default function ShowUserInfoDialog() {
+export default function ShowApiKeyInfoDialog() {
   const { open, props, closeDialog } = useDialogStore()
-  const userId = (props?.userId as string) || ""
+  const keyId = (props?.keyId as string) || ""
 
-  const { data: user, isLoading, error } = useUser({ id: userId })
+  const { data: key, isLoading, error } = useApiKey(keyId)
 
   useEffect(() => {
-    if (error || (!user && !isLoading)) {
-      toast.error("Error loading user information")
+    if (error || (!key && !isLoading)) {
+      toast.error("Error loading API key information")
       closeDialog()
     }
-  }, [error, user, isLoading, closeDialog])
+  }, [error, key, isLoading, closeDialog])
 
-  const fields = buildInfoFields(user, [
-    "id",
-    "traits",
-    "metadata_public",
-    "created_at",
-    "state",
+  const fields = buildInfoFields(key, [
+    "name",
+    "key_id",
+    "actor_id",
+    "scopes",
+    "status",
+    "create_time",
+    "expire_time",
+    "last_used_time",
+    "metadata",
   ])
 
   const infoText = fields
@@ -40,14 +44,14 @@ export default function ShowUserInfoDialog() {
     .join("\n")
 
   return (
-    <Dialog key={userId} open={open} onOpenChange={closeDialog}>
+    <Dialog key={keyId} open={open} onOpenChange={closeDialog}>
       <DialogContent showCloseButton={false} className="sm:max-w-md">
         <DialogHeader className="flex flex-row justify-between items-start">
-          <div className="flex flex-col gap-1">
-            <DialogTitle className="font-bold uppercase">
-              User Information
+          <div>
+            <DialogTitle className="uppercase font-black">
+              API Key Info
             </DialogTitle>
-            <DialogDescription>Details for user</DialogDescription>
+            <DialogDescription>{keyId}</DialogDescription>
           </div>
           <CopyToClipboard text={infoText} />
         </DialogHeader>

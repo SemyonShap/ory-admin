@@ -10,7 +10,11 @@ import {
 import { useDialogStore } from "@/store/dialogStore"
 import { Relationship } from "@ory/client-fetch"
 import CopyToClipboard from "@/components/common/copyToClipboard"
-import { InfoField, InfoFields } from "@/components/common/infoFields"
+import {
+  InfoField,
+  InfoFields,
+  buildInfoFields,
+} from "@/components/common/infoFields"
 
 export default function ShowRelashionshipInfoDialog() {
   const { open, props, closeDialog, openDialog } = useDialogStore()
@@ -20,9 +24,7 @@ export default function ShowRelashionshipInfoDialog() {
 
   if (relationship) {
     fields.push(
-      { label: "Namespace", value: relationship.namespace },
-      { label: "Object", value: relationship.object },
-      { label: "Relation", value: relationship.relation },
+      ...buildInfoFields(relationship, ["namespace", "object", "relation"]),
     )
 
     if (relationship.subject_id) {
@@ -35,17 +37,7 @@ export default function ShowRelashionshipInfoDialog() {
       }
       fields.push(subjectField)
     } else if (relationship.subject_set) {
-      fields.push(
-        {
-          label: "Subject Namespace",
-          value: relationship.subject_set.namespace,
-        },
-        { label: "Subject Object", value: relationship.subject_set.object },
-        {
-          label: "Subject Relation",
-          value: relationship.subject_set.relation,
-        },
-      )
+      fields.push(...buildInfoFields(relationship, ["subject_set"]))
     }
   }
 
@@ -65,7 +57,7 @@ export default function ShowRelashionshipInfoDialog() {
               Details for Keto relationship tuple
             </DialogDescription>
           </div>
-          <CopyToClipboard text={infoText} label="Relationship information" />
+          <CopyToClipboard text={infoText} />
         </DialogHeader>
         <InfoFields fields={fields} />
       </DialogContent>

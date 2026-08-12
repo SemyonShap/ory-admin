@@ -1,6 +1,7 @@
 "use server"
 
-import { kratosAdminUrl, hydraAdminUrl, ketoWriteUrl } from "@/lib/env"
+import fs from "node:fs"
+import { getServer, serverServiceUrl, ServerServices } from "@/lib/servers"
 
 export interface ServiceHealth {
   name: string
@@ -21,11 +22,30 @@ async function checkService(url: string, name: string): Promise<ServiceHealth> {
   }
 }
 
-export async function getHealth(): Promise<ServiceHealth[]> {
-  const services = [
-    { url: kratosAdminUrl(), name: "Kratos" },
-    { url: hydraAdminUrl(), name: "Hydra" },
-    { url: ketoWriteUrl(), name: "Keto" },
-  ]
-  return Promise.all(services.map((s) => checkService(s.url, s.name)))
+export async function getServiceHealth(
+  server: string,
+  service: keyof ServerServices,
+): Promise<ServiceHealth> {
+  const value = serverServiceUrl(server, service)
+  if (!value) return { name: service, status: "unknown" }
+
+  if (/^https?:\/\//i.test(value)) {
+    return checkService(value, service)
+  }
+
+  try {
+    return fs.existsSync(value)
+      ? { name: service, status: "ok" }
+      : { name: service, status: "error", error: `File not found: ${value}` }
+  } catch (e: unknown) {
+    return { name: service, status: "error", error: (e as Error).message }
+  }
+}
+
+export async function getHealth(server: string): Promise<ServiceHealth[]> {
+  const services = getServer(server)
+  const keys = (Object.keys(services) as (keyof ServerServices)[]).filter(
+    (k) => services[k],
+  )
+  return Promise.all(keys.map((k) => getServiceHealth(server, k)))
 }
